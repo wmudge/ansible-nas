@@ -1,0 +1,21 @@
+---
+unbound_enabled: false
+
+unbound_runtime_config: unbound_runtime.conf.j2
+unbound_forward_zone_config: unbound_forward_zone.conf.j2
+unbound_local_zone_config: unbound_local_zone.conf.j2
+
+unbound_verbosity: 0
+
+unbound_interface: 0.0.0.0
+unbound_access_cidr: "{{ ansible_default_ipv4['network'] }}/24"
+
+unbound_cache_min_ttl: 3600
+unbound_cache_max_ttl: 86400
+
+unbound_local_domain: home.arpa
+unbound_local_hosts: {}
+
+unbound_resolvers:
+  - 9.9.9.9
+  - 1.1.1.1

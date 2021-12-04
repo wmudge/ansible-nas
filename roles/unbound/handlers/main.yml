@@ -1,0 +1,5 @@
+---
+- name: Restart unbound
+  systemd:
+    name: unbound
+    state: restarted

@@ -1,0 +1,5 @@
+forward-zone:
+name: "."
+{% for resolver in unbound_resolvers %}
+forward-addr: {{ resolver }}
+{% endfor %}

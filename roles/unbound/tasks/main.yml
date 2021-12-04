@@ -1,0 +1,45 @@
+---
+- name: Install Unbound DNS Resolver
+  apt:
+    name: unbound
+    state: present
+
+- name: Deactivate Default DNS Resolver
+  systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+
+- name: Overwrite the Managed /etc/resolv.conf
+  copy:
+    dest: /etc/resolv.conf
+    force: yes
+    content: |
+      nameserver 127.0.0.1
+      nameserver ::1
+  notify:
+    - Restart unbound
+
+- name: Configure Unbound Runtime Options
+  template:
+    src: "{{ unbound_runtime_config }}"
+    dest: /etc/unbound/unbound.conf.d/runtime.conf
+  notify:
+    - Restart unbound
+
+- name: Configure Unbound Forward Zone
+  template:
+    src: "{{ unbound_forward_zone_config }}"
+    dest: /etc/unbound/unbound.conf.d/forward_zone.conf
+  notify:
+    - Restart unbound
+
+- name: Configure Unbound Local Zone
+  template:
+    src: "{{ unbound_local_zone_config }}"
+    dest: /etc/unbound/unbound.conf.d/local_zone.conf
+  notify:
+    - Restart unbound
+
+- name: Restart Unbound Daemon
+  meta: flush_handlers

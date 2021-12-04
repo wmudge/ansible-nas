@@ -1,0 +1,30 @@
+verbosity: {{ unbound_verbosity }}
+
+interface: {{ unbound_interface }}
+access-control: 127.0.0.1/8 allow
+access-control: {{ unbound_access_cidr }} allow
+
+cache-min-ttl: {{ unbound_cache_min_ttl }}
+cache-max-ttl: {{ unbound_cache_max_ttl }}
+
+harden-dnssec-stripped: "yes"
+
+# Memory Control example from unbound.conf(5)
+num-threads: 1
+outgoing-num-tcp: 1
+incoming-num-tcp: 1
+outgoing-range: 60
+msg-buffer-size: 8192
+msg-cache-size: 100k
+msg-cache-slabs: 1
+rrset-cache-size: 100k
+rrset-cache-slabs: 1
+infra-cache-numhosts: 200
+infra-cache-slabs: 1
+key-cache-size: 100k
+key-cache-slabs: 1
+neg-cache-size: 10k
+num-queries-per-thread: 30
+target-fetch-policy: "2 1 0 0 0 0"
+harden-large-queries: "yes"
+harden-short-bufsize: "yes"

@@ -1,0 +1,8 @@
+{% if unbound_local_domain %}
+private-domain: "{{ unbound_local_domain }}"
+local-zone: "{{ unbound_local_domain }}" static
+
+{% for host, address in unbound_local_hosts | dictsort %}
+local-data: "{{ host }}.{{ unbound_local_domain }} IN A {{ address }}"
+{% endfor %}
+{% endif %}

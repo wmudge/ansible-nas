@@ -1,0 +1,21 @@
+---
+
+- name: Deactivate the systemd-resolved StubListener
+  lineinfile:
+    regex: "DNSStubListener="
+    line: "DNSStubListener=no"
+    path: /etc/systemd/resolved.conf
+  notify:
+    - Restart systemd-resolved
+
+- name: Restart systemd-resolved if required
+  meta: flush_handlers
+
+- name: Reset /etc/resolv.conf to the non-StubListener
+  file:
+    path: /etc/resolv.conf
+    src: /run/systemd/resolve/resolv.conf
+    state: link
+    force: yes
+  notify:
+    - Restart systemd-resolved
